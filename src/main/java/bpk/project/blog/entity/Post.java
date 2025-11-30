@@ -1,13 +1,15 @@
 package bpk.project.blog.entity;
 
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import jakarta.persistence.*;
 import lombok.Data;
 
 @Data
+@JsonPropertyOrder({ "id", "title", "body", "slug", "isPublished", "isDeleted", "createdAt", "publishedAt", "updatedAt" })
 @Entity
 public class Post {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE) // Change to AUTO for production
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // Changed to IDENTITY
     private Integer id;
     private String title;
     private String body;
@@ -16,6 +18,7 @@ public class Post {
     private String slug;
     private boolean isPublished;
     private boolean isDeleted;
-    private long createdAt; // Change to long to handle time in seconds
-    private long publishedAt; // Change to long to handle time in seconds
+    private Long createdAt; // Change to long to handle time in seconds
+    private Long updatedAt; // Change to long to handle time in seconds
+    private Long publishedAt; // Change to long to handle time in seconds
 }

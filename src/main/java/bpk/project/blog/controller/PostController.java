@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 public class PostController {
    @Autowired
-   PostService postService = new PostService();
+   PostService postService;
 
    // Get All Posts
    @GetMapping("/")

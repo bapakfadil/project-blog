@@ -37,6 +37,11 @@ public class PostService {
         Post targetPost = postRepository.findFirstBySlug(slug).orElse(null);
         if(targetPost == null) return null;
         postDetails.setId(targetPost.getId());
+        postDetails.setCreatedAt(targetPost.getCreatedAt());
+        postDetails.setPublishedAt(targetPost.getPublishedAt());
+        postDetails.setUpdatedAt(Instant.now().getEpochSecond());
+        postDetails.setPublished(targetPost.isPublished());
+        postDetails.setDeleted(targetPost.isDeleted());
         return postRepository.save(postDetails);
     }
 
@@ -44,7 +49,8 @@ public class PostService {
     public boolean deletePostById(Integer id){
         Post targetPost = postRepository.findById(id).orElse(null);
         if(targetPost == null) return false;
-        postRepository.delete(targetPost);
+        targetPost.setDeleted(true);
+        postRepository.save(targetPost);
         return true;
     }
 
@@ -56,7 +62,7 @@ public class PostService {
         }
         targetPost.setPublished(true);
         targetPost.setPublishedAt(Instant.now().getEpochSecond());
-        return targetPost;
+        return postRepository.save(targetPost);
     }
 
 
