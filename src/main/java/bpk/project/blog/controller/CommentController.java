@@ -1,31 +1,32 @@
 package bpk.project.blog.controller;
 
 import bpk.project.blog.entity.Comment;
+import bpk.project.blog.service.CommentService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/comments")
 public class CommentController {
+    @Autowired
+    CommentService commentService;
+
     @GetMapping
     public Iterable<Comment> getComments(
             @RequestParam(required = false) String postSlug,
             @RequestParam(required = false) Integer pageNo,
             @RequestParam(required = false) Integer limit){
-        List<Comment> comments = new ArrayList<>();
-        return comments;
+        return commentService.getComments(postSlug, pageNo, limit);
     }
 
     @GetMapping("/{id}")
     public Comment getCommentById(@PathVariable Integer id){
-        return new Comment();
+        return commentService.getCommentById(id);
     }
 
     @PostMapping
     public Comment createComment(@RequestBody Comment comment){
-        return comment;
+        return commentService.createComment(comment);
     }
 
 
