@@ -1,9 +1,16 @@
 package bpk.project.blog.entity;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import lombok.Data;
 
 @Data
+@Entity
 public class Post {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String title;
     private String body;
@@ -12,11 +19,4 @@ public class Post {
     private boolean isDeleted;
     private Integer createdAt;
     private Integer publishedAt;
-
-    public Post(Integer id, String title, String body, String slug) {
-        this.id = id;
-        this.title = title;
-        this.body = body;
-        this.slug = slug;
-    }
 }
