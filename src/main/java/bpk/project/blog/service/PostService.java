@@ -23,7 +23,7 @@ public class PostService {
 
     // Service: Get Post by Slug
     public Post getPostBySlug(String slug){
-        return postRepository.findFirstBySlug(slug).orElse(null);
+        return postRepository.findFirstBySlugAndIsDeleted(slug, false).orElse(null);
     }
 
     // Service: Create Post
@@ -34,7 +34,7 @@ public class PostService {
 
     // Service: Update Post
     public Post updatePostBySlug(String slug, Post postDetails){
-        Post targetPost = postRepository.findFirstBySlug(slug).orElse(null);
+        Post targetPost = postRepository.findFirstBySlugAndIsDeleted(slug, false).orElse(null);
         if(targetPost == null) return null;
         postDetails.setId(targetPost.getId());
         postDetails.setCreatedAt(targetPost.getCreatedAt());
