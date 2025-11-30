@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 @JsonPropertyOrder({ "id", "title", "body", "slug", "isPublished", "isDeleted", "createdAt", "publishedAt", "updatedAt" })
 @Entity
@@ -21,4 +23,7 @@ public class Post {
     private Long createdAt; // Change to long to handle time in seconds
     private Long updatedAt; // Change to long to handle time in seconds
     private Long publishedAt; // Change to long to handle time in seconds
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "post", orphanRemoval = true)
+    private List<Comment> comments;
 }

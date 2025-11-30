@@ -1,22 +1,40 @@
 package bpk.project.blog.service;
 
 import bpk.project.blog.entity.Comment;
+import bpk.project.blog.entity.Post;
+import bpk.project.blog.repository.CommentRepository;
+import bpk.project.blog.repository.PostRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.time.Instant;
 
 @Service
 public class CommentService {
+    @Autowired
+    CommentRepository commentRepository;
+    @Autowired
+    PostRepository postRepository;
+
     public Iterable<Comment> getComments(String postSlug, Integer pageNo, Integer limit){
-        List<Comment> comments = List.of();
-        return comments;
+        Post post = postRepository.findFirstBySlugAndIsDeleted(postSlug, false).orElse(null);
+        if(post == null) { return null; };
+        PageRequest pageRequest = PageRequest.of(pageNo, limit);
+        return commentRepository.findByPostId(post.getId(), pageRequest).getContent();
     }
 
     public Comment getCommentById(Integer id){
-        return new Comment();
+        return commentRepository.findById(id).orElse(null);
     }
 
     public Comment createComment(Comment comment){
-        return comment;
+        Post post = postRepository.findFirstBySlugAndIsDeleted(comment.getPost().getSlug(), false).orElse(null);
+        if(post == null) {
+            return null;
+        };
+        comment.setCreatedAt(Instant.now().getEpochSecond());
+        comment.getPost().setId(post.getId());
+        return commentRepository.save(comment);
     }
 }
